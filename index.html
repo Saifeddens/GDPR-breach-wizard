@@ -37,7 +37,18 @@
         </ul>
       </div>
 
-      <button id="startBtn">Start Assessment</button>
+        <div id="startSection">
+            <button id="startBtn">Start Assessment</button>
+        </div>
+
+        <div id="questionSection" style="display: none;">
+            <h2>Step 1: Personal Data</h2>
+            <p>Was personal data involved in the breach?</p>
+
+            <button onclick="answerPersonalData(true)">Yes</button>
+            <button onclick="answerPersonalData(false)">No</button>
+        </div>
+
     </div>
   </div>
 
