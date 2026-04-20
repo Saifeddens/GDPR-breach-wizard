@@ -33,20 +33,46 @@ function handleAnswer(value) {
     questionTitle.innerText = "Step 2: Sensitive Data";
     questionText.innerText =
       "Does the breach involve sensitive data (health, biometric, financial, etc.)?";
-  } else if (step === 2) {
+  }
+
+  else if (step === 2) {
     answers.sensitiveData = value;
 
-    if (answers.sensitiveData) {
-      showResult(
-        "High Risk Breach",
-        "Sensitive personal data is involved. Under GDPR Articles 33 and 34, you must notify both the supervisory authority and the affected individuals."
-      );
+    step = 3;
+    questionTitle.innerText = "Step 3: Encryption";
+    questionText.innerText =
+      "Was the personal data encrypted or otherwise protected?";
+  }
+
+  else if (step === 3) {
+    answers.encrypted = value;
+
+    // 🔥 CHANGE: now we ask SCALE properly
+    step = 4;
+    questionTitle.innerText = "Step 4: Scale of Impact";
+    questionText.innerText =
+      "How many individuals were affected?\n\n(Yes = Multiple / No = Single)";
+  }
+
+  else if (step === 4) {
+    // true = multiple, false = single
+    answers.multiple = value;
+
+    if (!value) {
+      // 🔥 if SINGLE → extra question
+      step = 5;
+      questionTitle.innerText = "Step 5: Risk to Individual";
+      questionText.innerText =
+        "Is there a likely risk of harm to this individual?";
     } else {
-      showResult(
-        "Moderate Risk Breach",
-        "Personal data is involved but not sensitive. You likely need to notify the supervisory authority (Article 33), but notifying individuals may not be required."
-      );
+      // multiple → go to decision
+      evaluateRisk();
     }
+  }
+
+  else if (step === 5) {
+    answers.individualRisk = value;
+    evaluateRisk();
   }
 }
 
@@ -78,6 +104,45 @@ function restart() {
   // 🔥 bring button back
   const generateBtn = document.getElementById("generateBtn");
   generateBtn.style.display = "block";
+}
+
+function evaluateRisk() {
+  let decision = "";
+  let explanation = "";
+
+  // 🔴 HIGH RISK
+  if (
+    answers.sensitiveData &&
+    !answers.encrypted &&
+    (answers.multiple || answers.individualRisk)
+  ) {
+    decision = "High Risk Breach";
+    explanation =
+      "Sensitive data combined with lack of protection and risk to individuals creates a high risk scenario. Under GDPR Articles 33 and 34, both the supervisory authority and affected individuals must be notified.";
+  }
+
+  // 🟡 MODERATE RISK
+  else if (answers.sensitiveData || answers.multiple) {
+    decision = "Moderate Risk Breach";
+    explanation =
+      "Some risk factors are present such as sensitive data or multiple individuals affected. Notification to the supervisory authority is likely required under Article 33.";
+  }
+
+  // 🟢 LOW RISK
+  else if (answers.encrypted && !answers.individualRisk) {
+    decision = "Low Risk Breach";
+    explanation =
+      "The data was protected and risk to individuals is low. Notification may not be required.";
+  }
+
+  // ⚪ DEFAULT
+  else {
+    decision = "Unclear Risk";
+    explanation =
+      "The situation requires further legal assessment based on additional factors.";
+  }
+
+  showResult(decision, explanation);
 }
 
 function generateNotification() {
