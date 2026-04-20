@@ -84,6 +84,15 @@ function showResult(decision, explanation) {
 
   const notificationBox = document.getElementById("notificationBox");
   notificationBox.style.display = "none";
+
+  const generateBtn = document.getElementById("generateBtn");
+
+  // 🔥 KEY FIX
+  if (decision === "GDPR does NOT apply" || decision === "No Impact") {
+    generateBtn.style.display = "none";
+  } else {
+    generateBtn.style.display = "block";
+  }
 }
 
 function restart() {
