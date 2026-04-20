@@ -9,6 +9,8 @@ const questionText = document.getElementById("questionText");
 const resultDecision = document.getElementById("resultDecision");
 const resultExplanation = document.getElementById("resultExplanation");
 
+const answerButtons = document.getElementById("answerButtons");
+
 let step = 1;
 let answers = {};
 
@@ -47,28 +49,19 @@ function handleAnswer(value) {
   else if (step === 3) {
     answers.encrypted = value;
 
-    // 🔥 CHANGE: now we ask SCALE properly
     step = 4;
     questionTitle.innerText = "Step 4: Scale of Impact";
-    questionText.innerText =
-      "How many individuals were affected?\n\n(Yes = Multiple / No = Single)";
+    questionText.innerText = "How many individuals were affected?";
+
+    answerButtons.innerHTML = `
+      <button onclick="selectScale('none')">No Individuals Affected</button>
+      <button onclick="selectScale('single')">Single Individual</button>
+      <button onclick="selectScale('multiple')">Multiple Individuals</button>
+      <button onclick="selectScale('large')">Large-scale Breach</button>
+    `;
   }
 
-  else if (step === 4) {
-    // true = multiple, false = single
-    answers.multiple = value;
-
-    if (!value) {
-      // 🔥 if SINGLE → extra question
-      step = 5;
-      questionTitle.innerText = "Step 5: Risk to Individual";
-      questionText.innerText =
-        "Is there a likely risk of harm to this individual?";
-    } else {
-      // multiple → go to decision
-      evaluateRisk();
-    }
-  }
+  
 
   else if (step === 5) {
     answers.individualRisk = value;
@@ -83,7 +76,6 @@ function showResult(decision, explanation) {
   resultDecision.innerText = decision;
   resultExplanation.innerText = explanation;
 
-  // 🔥 FIX: hide notification box initially
   const notificationBox = document.getElementById("notificationBox");
   notificationBox.style.display = "none";
 }
@@ -101,41 +93,41 @@ function restart() {
   const notificationBox = document.getElementById("notificationBox");
   notificationBox.style.display = "none";
 
-  // 🔥 bring button back
   const generateBtn = document.getElementById("generateBtn");
   generateBtn.style.display = "block";
+
+  answerButtons.innerHTML = `
+  <button onclick="handleAnswer(true)">Yes</button>
+  <button onclick="handleAnswer(false)">No</button>
+`;
 }
 
 function evaluateRisk() {
   let decision = "";
   let explanation = "";
 
-  // 🔴 HIGH RISK
   if (
     answers.sensitiveData &&
     !answers.encrypted &&
-    (answers.multiple || answers.individualRisk)
+    (answers.scale === "multiple" || answers.scale === "large" || answers.individualRisk)
   ) {
     decision = "High Risk Breach";
     explanation =
       "Sensitive data combined with lack of protection and risk to individuals creates a high risk scenario. Under GDPR Articles 33 and 34, both the supervisory authority and affected individuals must be notified.";
   }
 
-  // 🟡 MODERATE RISK
-  else if (answers.sensitiveData || answers.multiple) {
+  else if (answers.sensitiveData || answers.scale === "multiple" || answers.scale === "large") {
     decision = "Moderate Risk Breach";
     explanation =
       "Some risk factors are present such as sensitive data or multiple individuals affected. Notification to the supervisory authority is likely required under Article 33.";
   }
 
-  // 🟢 LOW RISK
-  else if (answers.encrypted && !answers.individualRisk) {
+  else if (answers.encrypted && answers.individualRisk !== true) {
     decision = "Low Risk Breach";
     explanation =
       "The data was protected and risk to individuals is low. Notification may not be required.";
   }
 
-  // ⚪ DEFAULT
   else {
     decision = "Unclear Risk";
     explanation =
@@ -153,30 +145,39 @@ function generateNotification() {
   let text = "";
 
   if (answers.sensitiveData) {
-    text = `
-We regret to inform you that a data breach involving sensitive personal data has occurred.
-
-The incident may pose a high risk to your rights and freedoms. In accordance with GDPR Articles 33 and 34, we have notified the relevant supervisory authority.
-
-We recommend that you take appropriate precautions.
-
-We sincerely apologize for this incident.
-    `;
+    text = `We regret to inform you that a data breach involving sensitive personal data has occurred...`;
   } else {
-    text = `
-We would like to inform you of a data breach involving personal data.
-
-The breach has been assessed and reported to the supervisory authority in accordance with GDPR Article 33.
-
-At this time, the risk to individuals is considered limited.
-
-We remain committed to protecting your data.
-    `;
+    text = `We would like to inform you of a data breach involving personal data...`;
   }
 
   notificationText.innerText = text;
   notificationBox.style.display = "block";
 
-  // 🔥 NEW: hide the button after clicking
   generateBtn.style.display = "none";
+}
+
+function selectScale(type) {
+  answers.scale = type;
+
+  if (type === "none") {
+    showResult(
+      "No Impact",
+      "No individuals were affected, so notification is not required."
+    );
+    return;
+  }
+
+  if (type === "single") {
+    step = 5;
+    questionTitle.innerText = "Step 5: Risk to Individual";
+    questionText.innerText =
+      "Is there a likely risk of harm to this individual?";
+
+    answerButtons.innerHTML = `
+      <button onclick="handleAnswer(true)">Yes</button>
+      <button onclick="handleAnswer(false)">No</button>
+    `;
+  } else {
+    evaluateRisk();
+  }
 }
