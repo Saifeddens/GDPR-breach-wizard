@@ -123,6 +123,30 @@ function evaluateRisk() {
   let decision = "";
   let explanation = "";
 
+  let reasons = [];
+
+  // here we collect the information and reasons
+  if (answers.sensitiveData) {
+    reasons.push("sensitive data is involved");
+  }
+
+  if (!answers.encrypted) {
+    reasons.push("data was not protected (no encryption)");
+  }
+
+  if (answers.scale === "multiple") {
+    reasons.push("multiple individuals were affected");
+  }
+
+  if (answers.scale === "large") {
+    reasons.push("a large number of individuals were affected");
+  }
+
+  if (answers.individualRisk) {
+    reasons.push("there is a risk of harm to the individual");
+  }
+
+  // it gives high risk here
   if (
     answers.sensitiveData &&
     !answers.encrypted &&
@@ -130,21 +154,32 @@ function evaluateRisk() {
   ) {
     decision = "High Risk Breach";
     explanation =
-      "Sensitive data combined with lack of protection and risk to individuals creates a high risk scenario. Under GDPR Articles 33 and 34, both the supervisory authority and affected individuals must be notified.";
+      "This is considered a high risk breach because " +
+      reasons.join(", ") +
+      ". Under GDPR Articles 33 and 34, both the supervisory authority and affected individuals must be notified.";
   }
 
-  else if (answers.sensitiveData || answers.scale === "multiple" || answers.scale === "large") {
+  // it gives moderate risk here
+  else if (
+    answers.sensitiveData ||
+    answers.scale === "multiple" ||
+    answers.scale === "large"
+  ) {
     decision = "Moderate Risk Breach";
     explanation =
-      "Some risk factors are present such as sensitive data or multiple individuals affected. Notification to the supervisory authority is likely required under Article 33.";
+      "This is considered a moderate risk breach because " +
+      reasons.join(", ") +
+      ". Notification to the supervisory authority is likely required under Article 33.";
   }
 
-  else if (answers.encrypted && answers.individualRisk !== true) {
+  // it gives low risk here
+  else if (answers.encrypted && !answers.individualRisk) {
     decision = "Low Risk Breach";
     explanation =
-      "The data was protected and risk to individuals is low. Notification may not be required.";
+      "This is considered a low risk breach because the data was protected and no significant risk factors were identified.";
   }
 
+  // if none of the above 
   else {
     decision = "Unclear Risk";
     explanation =
