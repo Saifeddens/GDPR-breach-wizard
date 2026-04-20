@@ -14,6 +14,10 @@ const answerButtons = document.getElementById("answerButtons");
 const progressText = document.getElementById("progressText");
 const progressFill = document.getElementById("progressFill");
 
+const authorityBtn = document.getElementById("authorityBtn");
+const userBtn = document.getElementById("userBtn");
+const notificationTitle = document.getElementById("notificationTitle");
+
 let step = 1;
 let answers = {};
 
@@ -85,13 +89,16 @@ function showResult(decision, explanation) {
   const notificationBox = document.getElementById("notificationBox");
   notificationBox.style.display = "none";
 
-  const generateBtn = document.getElementById("generateBtn");
-
-  // 🔥 KEY FIX
+  // 🔥 CONTROL BUTTONS
   if (decision === "GDPR does NOT apply" || decision === "No Impact") {
-    generateBtn.style.display = "none";
+    authorityBtn.style.display = "none";
+    userBtn.style.display = "none";
+  } else if (decision === "Moderate Risk Breach") {
+    authorityBtn.style.display = "block";
+    userBtn.style.display = "none";
   } else {
-    generateBtn.style.display = "block";
+    authorityBtn.style.display = "block";
+    userBtn.style.display = "block";
   }
 }
 
@@ -117,6 +124,9 @@ function restart() {
 `;
   progressFill.style.width = "0%";
   progressText.innerText = "Step 1 of 5";
+
+  authorityBtn.style.display = "block";
+  userBtn.style.display = "block";
 }
 
 function evaluateRisk() {
@@ -189,23 +199,58 @@ function evaluateRisk() {
   showResult(decision, explanation);
 }
 
-function generateNotification() {
+function generateAuthorityNotification() {
   const notificationBox = document.getElementById("notificationBox");
   const notificationText = document.getElementById("notificationText");
-  const generateBtn = document.getElementById("generateBtn");
 
-  let text = "";
+    notificationTitle.innerText = "Notification to Supervisory Authority";
 
-  if (answers.sensitiveData) {
-    text = `We regret to inform you that a data breach involving sensitive personal data has occurred...`;
-  } else {
-    text = `We would like to inform you of a data breach involving personal data...`;
-  }
+    notificationText.innerText = `
+  This notification is submitted pursuant to Article 33 of the GDPR.
 
-  notificationText.innerText = text;
+  A personal data breach has occurred involving ${
+      answers.sensitiveData ? "sensitive personal data" : "personal data"
+    }.
+
+  The breach affects ${
+      answers.scale === "large"
+        ? "a large number of individuals"
+        : answers.scale === "multiple"
+        ? "multiple individuals"
+        : "a single individual"
+    }.
+
+  The data protection measures were ${
+      answers.encrypted ? "in place (encrypted)" : "not sufficient"
+    }.
+
+  We are taking appropriate measures to mitigate the impact and prevent recurrence.
+    `;
+
   notificationBox.style.display = "block";
+}
 
-  generateBtn.style.display = "none";
+function generateUserNotification() {
+  const notificationBox = document.getElementById("notificationBox");
+  const notificationText = document.getElementById("notificationText");
+
+  notificationTitle.innerText = "Notification to Affected Individual(s)";
+
+  notificationText.innerText = `
+We regret to inform you that a data breach has occurred involving your personal data.
+
+The incident ${
+    answers.sensitiveData
+      ? "may pose a risk to your rights and freedoms"
+      : "has been assessed as having limited risk"
+  }.
+
+  We recommend that you remain cautious and monitor any unusual activity.
+
+  We sincerely apologize for this incident and are taking steps to ensure it does not happen again.
+  `;
+
+  notificationBox.style.display = "block";
 }
 
 function selectScale(type) {
