@@ -11,12 +11,17 @@ const resultExplanation = document.getElementById("resultExplanation");
 
 const answerButtons = document.getElementById("answerButtons");
 
+const progressText = document.getElementById("progressText");
+const progressFill = document.getElementById("progressFill");
+
 let step = 1;
 let answers = {};
 
 startBtn.addEventListener("click", () => {
   startSection.style.display = "none";
   questionSection.style.display = "block";
+
+  updateProgress();
 });
 
 function handleAnswer(value) {
@@ -32,6 +37,7 @@ function handleAnswer(value) {
     }
 
     step = 2;
+    updateProgress();
     questionTitle.innerText = "Step 2: Sensitive Data";
     questionText.innerText =
       "Does the breach involve sensitive data (health, biometric, financial, etc.)?";
@@ -41,6 +47,7 @@ function handleAnswer(value) {
     answers.sensitiveData = value;
 
     step = 3;
+    updateProgress();
     questionTitle.innerText = "Step 3: Encryption";
     questionText.innerText =
       "Was the personal data encrypted or otherwise protected?";
@@ -50,6 +57,7 @@ function handleAnswer(value) {
     answers.encrypted = value;
 
     step = 4;
+    updateProgress();
     questionTitle.innerText = "Step 4: Scale of Impact";
     questionText.innerText = "How many individuals were affected?";
 
@@ -60,8 +68,6 @@ function handleAnswer(value) {
       <button onclick="selectScale('large')">Large-scale Breach</button>
     `;
   }
-
-  
 
   else if (step === 5) {
     answers.individualRisk = value;
@@ -100,6 +106,8 @@ function restart() {
   <button onclick="handleAnswer(true)">Yes</button>
   <button onclick="handleAnswer(false)">No</button>
 `;
+  progressFill.style.width = "0%";
+  progressText.innerText = "Step 1 of 5";
 }
 
 function evaluateRisk() {
@@ -169,6 +177,7 @@ function selectScale(type) {
 
   if (type === "single") {
     step = 5;
+    updateProgress();
     questionTitle.innerText = "Step 5: Risk to Individual";
     questionText.innerText =
       "Is there a likely risk of harm to this individual?";
@@ -180,4 +189,13 @@ function selectScale(type) {
   } else {
     evaluateRisk();
   }
+}
+
+function updateProgress() {
+  const totalSteps = 5;
+
+  progressText.innerText = `Step ${step} of ${totalSteps}`;
+
+  const percent = (step / totalSteps) * 100;
+  progressFill.style.width = percent + "%";
 }
