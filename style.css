@@ -189,3 +189,33 @@ textarea{
 .full-width{
   margin-bottom:30px;
 }
+
+.action-box{
+  background:#f7fbff;
+  padding:28px;
+  border-radius:16px;
+  border:1px solid #d9e8f7;
+}
+
+.action-box h2{
+  margin-bottom:18px;
+}
+
+.action-box ul{
+  padding-left:22px;
+}
+
+.action-box li{
+  margin-bottom:12px;
+  color:#294766;
+}
+
+.report-link{
+  display:inline-block;
+  text-decoration:none;
+  color:white;
+  background:#163c72;
+  padding:14px 22px;
+  border-radius:12px;
+  font-weight:bold;
+}

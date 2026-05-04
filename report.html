@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Compliance Report</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="navbar">
+  <div class="logo">
+    <h2>GDPR Compliance Platform</h2>
+  </div>
+
+  <nav>
+    <a href="index.html">Dashboard</a>
+    <a href="incident.html">New Incident</a>
+    <a href="assessment.html">Assessment</a>
+    <a href="report.html">Reports</a>
+  </nav>
+</header>
+
+<main class="dashboard">
+
+  <section class="hero">
+    <p class="tagline">Automated Compliance Output</p>
+    <h1>Compliance Report</h1>
+    <p class="hero-text">
+      Final legal assessment and recommended regulatory actions.
+    </p>
+  </section>
+
+  <section class="form-card">
+
+    <div id="incidentReport"></div>
+
+    <br>
+
+    <div id="assessmentReport"></div>
+
+    <br>
+
+    <div class="action-box">
+      <h2>Recommended Actions</h2>
+      <ul id="actionList"></ul>
+    </div>
+
+    <br>
+
+    <a href="incident.html" class="primary-btn">
+      Create New Case →
+    </a>
+
+  </section>
+
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>

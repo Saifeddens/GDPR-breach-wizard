@@ -85,6 +85,13 @@ function showResult(decision, explanation) {
 
   resultDecision.innerText = decision;
   resultExplanation.innerText = explanation;
+  localStorage.setItem(
+  "gdprAssessment",
+    JSON.stringify({
+        decision,
+        explanation
+    })
+    );
 
   const notificationBox = document.getElementById("notificationBox");
   notificationBox.style.display = "none";
@@ -100,6 +107,8 @@ function showResult(decision, explanation) {
     authorityBtn.style.display = "block";
     userBtn.style.display = "block";
   }
+
+  document.getElementById("reportBtn").style.display = "inline-block";
 }
 
 function restart() {
