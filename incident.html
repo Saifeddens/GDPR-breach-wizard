@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>New Incident | GDPR Compliance Platform</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="navbar">
+  <div class="logo">
+    <h2>GDPR Compliance Platform</h2>
+  </div>
+
+  <nav>
+    <a href="index.html">Dashboard</a>
+    <a href="incident.html">New Incident</a>
+    <a href="assessment.html">Assessment</a>
+    <a href="report.html">Reports</a>
+  </nav>
+</header>
+
+<main class="dashboard">
+
+  <section class="hero">
+    <p class="tagline">Create a new compliance case</p>
+    <h1>Incident Intake Form</h1>
+    <p class="hero-text">
+      Record breach details before beginning the legal assessment workflow.
+    </p>
+  </section>
+
+  <section class="form-card">
+
+    <h2>Incident Details</h2>
+
+    <div class="form-grid">
+
+      <div class="input-group">
+        <label>Incident Title</label>
+        <input id="incidentTitle" type="text" placeholder="e.g. Lost HR laptop containing payroll files">
+      </div>
+
+    <div class="input-group">
+    <label>Date Discovered</label>
+    <input id="incidentDate" type="date">
+    </div>
+
+      <div class="input-group">
+        <label>Department</label>
+        <select id="incidentDepartment">
+          <option>Human Resources</option>
+          <option>Finance</option>
+          <option>IT</option>
+          <option>Legal</option>
+          <option>Operations</option>
+        </select>
+      </div>
+
+      <div class="input-group">
+        <label>Data Category</label>
+        <select id="incidentCategory">
+          <option>Contact Information</option>
+          <option>Financial Data</option>
+          <option>Health Data</option>
+          <option>Employee Records</option>
+          <option>Mixed Personal Data</option>
+        </select>
+      </div>
+
+      <div class="input-group">
+        <label>Estimated Individuals Affected</label>
+        <input id="incidentCount" type="number" placeholder="e.g. 500">
+      </div>
+
+      <div class="input-group">
+        <label>Urgency Level</label>
+        <select id="incidentUrgency">
+          <option>Low</option>
+          <option>Medium</option>
+          <option>High</option>
+          <option>Critical</option>
+        </select>
+      </div>
+
+    </div>
+
+    <div class="input-group full-width">
+      <label>Incident Description</label>
+      <textarea id="incidentDescription" placeholder="Describe what happened..."></textarea>
+    </div>
+
+    <button type="button" class="primary-btn" onclick="saveIncident()">
+        Continue to Assessment →
+    </button>   
+
+  </section>
+
+</main>
+<script src="script.js"></script>
+</body>
+</html>
