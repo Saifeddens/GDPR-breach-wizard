@@ -160,6 +160,8 @@ function evaluateRisk() {
   let explanation = "";
 
   let reasons = [];
+  let riskFlags = [];
+  let mitigations = [];
 
   // here we collect the information and reasons
   if (answers.sensitiveData) {
@@ -181,7 +183,55 @@ function evaluateRisk() {
   if (answers.individualRisk) {
     reasons.push("there is a risk of harm to the individual");
   }
+    // Risk flagging based on breach type
+  if (answers.breachType === "unauthorized") {
+    riskFlags.push("Unauthorized access risk");
+    riskFlags.push("Loss of confidentiality");
+    mitigations.push("Restrict access immediately");
+    mitigations.push("Review access logs");
+  }
 
+  if (answers.breachType === "disclosure") {
+    riskFlags.push("Accidental disclosure risk");
+    riskFlags.push("Reputational damage");
+    mitigations.push("Contact unintended recipients");
+    mitigations.push("Request deletion of incorrectly disclosed data");
+  }
+
+  if (answers.breachType === "device") {
+    riskFlags.push("Device loss risk");
+    riskFlags.push("Potential identity theft");
+    mitigations.push("Remotely wipe or lock the device");
+    mitigations.push("Change affected account credentials");
+  }
+
+  if (answers.breachType === "ransomware") {
+    riskFlags.push("Ransomware risk");
+    riskFlags.push("Loss of availability");
+    mitigations.push("Isolate affected systems");
+    mitigations.push("Restore data from secure backups");
+  }
+
+  // Risk flagging based on data type
+  if (answers.sensitiveData) {
+    riskFlags.push("Sensitive data exposure");
+    mitigations.push("Escalate to Data Protection Officer");
+  }
+
+  if (!answers.encrypted) {
+    riskFlags.push("Unprotected data exposure");
+    mitigations.push("Review encryption and security controls");
+  }
+
+  if (answers.scale === "large") {
+    riskFlags.push("Large-scale impact");
+    mitigations.push("Prepare communication plan for affected individuals");
+  }
+
+  const reasonText =
+  reasons.length > 0
+    ? reasons.join(", ")
+    : "limited risk factors were identified";
   // it gives high risk here
   if (
     answers.sensitiveData &&
@@ -191,7 +241,7 @@ function evaluateRisk() {
     decision = "High Risk Breach";
     explanation =
       "This is considered a high risk breach because " +
-      reasons.join(", ") +
+      reasonText +
       ". Under GDPR Articles 33 and 34, both the supervisory authority and affected individuals must be notified.";
   }
 
@@ -204,7 +254,7 @@ function evaluateRisk() {
     decision = "Moderate Risk Breach";
     explanation =
       "This is considered a moderate risk breach because " +
-      reasons.join(", ") +
+      reasonText +
       ". Notification to the supervisory authority is likely required under Article 33.";
   }
 
@@ -222,6 +272,8 @@ function evaluateRisk() {
       "The situation requires further legal assessment based on additional factors.";
   }
 
+  localStorage.setItem("gdprRisks", JSON.stringify(riskFlags));
+  localStorage.setItem("gdprMitigations", JSON.stringify(mitigations));
   showResult(decision, explanation);
 }
 
