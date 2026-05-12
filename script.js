@@ -14,6 +14,11 @@ function saveIncident() {
 }
 
 window.addEventListener("load", () => {
+  const riskList = document.getElementById("riskList");
+  const mitigationList = document.getElementById("mitigationList");
+
+  const risks = JSON.parse(localStorage.getItem("gdprRisks")) || [];
+  const mitigations = JSON.parse(localStorage.getItem("gdprMitigations")) || [];
   const incident = JSON.parse(localStorage.getItem("gdprIncident"));
   const assessment = JSON.parse(localStorage.getItem("gdprAssessment"));
 
@@ -55,4 +60,11 @@ window.addEventListener("load", () => {
   }
 
   actionList.innerHTML = actions;
+  riskList.innerHTML = risks.length
+    ? risks.map(risk => `<li>${risk}</li>`).join("")
+    : "<li>No specific risks identified.</li>";
+
+  mitigationList.innerHTML = mitigations.length
+    ? mitigations.map(item => `<li>${item}</li>`).join("")
+    : "<li>No additional mitigation measures suggested.</li>";
 });
