@@ -10,6 +10,7 @@ const resultDecision = document.getElementById("resultDecision");
 const resultExplanation = document.getElementById("resultExplanation");
 
 const answerButtons = document.getElementById("answerButtons");
+const dynamicOptions = document.getElementById("dynamicOptions");
 
 const progressText = document.getElementById("progressText");
 const progressFill = document.getElementById("progressFill");
@@ -58,20 +59,36 @@ function handleAnswer(value) {
   }
 
   else if (step === 3) {
-    answers.encrypted = value;
+  answers.encrypted = value;
 
-    step = 4;
-    updateProgress();
-    questionTitle.innerText = "Step 4: Scale of Impact";
-    questionText.innerText = "How many individuals were affected?";
+  step = 4;
+  updateProgress();
 
-    answerButtons.innerHTML = `
-      <button onclick="selectScale('none')">No Individuals Affected</button>
-      <button onclick="selectScale('single')">Single Individual</button>
-      <button onclick="selectScale('multiple')">Multiple Individuals</button>
-      <button onclick="selectScale('large')">Large-scale Breach</button>
-    `;
-  }
+  questionTitle.innerText = "Step 4: Nature of Breach";
+
+  questionText.innerText =
+    "What type of personal data breach occurred?";
+
+  answerButtons.style.display = "none";
+
+  dynamicOptions.innerHTML = `
+    <button class="primary-btn" onclick="selectBreachType('unauthorized')">
+      Unauthorized Access
+    </button>
+
+    <button class="primary-btn" onclick="selectBreachType('disclosure')">
+      Accidental Disclosure
+    </button>
+
+    <button class="primary-btn" onclick="selectBreachType('device')">
+      Lost / Stolen Device
+    </button>
+
+    <button class="primary-btn" onclick="selectBreachType('ransomware')">
+      Ransomware Attack
+    </button>
+  `;
+}
 
   else if (step === 5) {
     answers.individualRisk = value;
@@ -128,8 +145,8 @@ function restart() {
   userBtn.style.display = "block";
 
   answerButtons.innerHTML = `
-  <button onclick="handleAnswer(true)">Yes</button>
-  <button onclick="handleAnswer(false)">No</button>
+  <button class="primary-btn" onclick="handleAnswer(true)">Yes</button>
+  <button class="primary-btn" onclick="handleAnswer(false)">No</button>
 `;
   progressFill.style.width = "0%";
   progressText.innerText = "Step 1 of 5";
@@ -274,7 +291,7 @@ function selectScale(type) {
   }
 
   if (type === "single") {
-    step = 5;
+    step = 6;
     updateProgress();
     questionTitle.innerText = "Step 5: Risk to Individual";
     questionText.innerText =
@@ -289,8 +306,36 @@ function selectScale(type) {
   }
 }
 
+function selectBreachType(type) {
+  answers.breachType = type;
+
+  step = 5;
+  updateProgress();
+
+  questionTitle.innerText = "Step 5: Scale of Impact";
+  questionText.innerText = "How many individuals were affected?";
+
+  dynamicOptions.innerHTML = `
+    <button class="primary-btn" onclick="selectScale('none')">
+      No Individuals Affected
+    </button>
+
+    <button class="primary-btn" onclick="selectScale('single')">
+      Single Individual
+    </button>
+
+    <button class="primary-btn" onclick="selectScale('multiple')">
+      Multiple Individuals
+    </button>
+
+    <button class="primary-btn" onclick="selectScale('large')">
+      Large-scale Breach
+    </button>
+  `;
+}
+
 function updateProgress() {
-  const totalSteps = 5;
+  const totalSteps = 6;
 
   progressText.innerText = `Step ${step} of ${totalSteps}`;
 
