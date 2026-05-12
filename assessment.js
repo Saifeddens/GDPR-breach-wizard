@@ -162,25 +162,31 @@ function evaluateRisk() {
   let reasons = [];
   let riskFlags = [];
   let mitigations = [];
+  let severityScore = 0;
 
   // here we collect the information and reasons
   if (answers.sensitiveData) {
+    severityScore += 30;
     reasons.push("sensitive data is involved");
   }
 
   if (!answers.encrypted) {
+    severityScore += 20;
     reasons.push("data was not protected (no encryption)");
   }
 
   if (answers.scale === "multiple") {
+    severityScore += 15;
     reasons.push("multiple individuals were affected");
   }
 
   if (answers.scale === "large") {
+    severityScore += 30;
     reasons.push("a large number of individuals were affected");
   }
 
   if (answers.individualRisk) {
+    severityScore += 20;
     reasons.push("there is a risk of harm to the individual");
   }
     // Risk flagging based on breach type
@@ -274,6 +280,7 @@ function evaluateRisk() {
 
   localStorage.setItem("gdprRisks", JSON.stringify(riskFlags));
   localStorage.setItem("gdprMitigations", JSON.stringify(mitigations));
+  localStorage.setItem("gdprSeverity", severityScore);
   showResult(decision, explanation);
 }
 
