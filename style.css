@@ -219,3 +219,21 @@ textarea{
   border-radius:12px;
   font-weight:bold;
 }
+.case-summary-box{
+  background:#f7fbff;
+  border:1px solid #d9e8f7;
+  border-radius:16px;
+  padding:24px;
+  margin-bottom:28px;
+}
+
+.case-summary-box h2{
+  margin-bottom:18px;
+  color:#163c72;
+}
+
+.case-summary-box p{
+  margin-bottom:10px;
+  color:#294766;
+  line-height:1.6;
+}

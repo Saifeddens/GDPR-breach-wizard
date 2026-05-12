@@ -308,8 +308,8 @@ window.addEventListener("load", () => {
       <strong>Title:</strong> ${savedIncident.title}<br>
       <strong>Department:</strong> ${savedIncident.department}<br>
       <strong>Category:</strong> ${savedIncident.category}<br>
-      <strong>Affected:</strong> ${savedIncident.count}<br>
-      <strong>Urgency:</strong> ${savedIncident.urgency}
+      <strong>Affected Individuals:</strong> ${savedIncident.count}<br>
+      <strong>Urgency Level:</strong> ${savedIncident.urgency}
     `;
   }
 });

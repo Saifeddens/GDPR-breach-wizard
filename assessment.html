@@ -32,9 +32,12 @@
 
       
 
-      <div id="caseSummary" class="project-meta" style="display:none;">
-        <h3>Current Incident Case</h3>
+      <div id="caseSummary" class="case-summary-box" style="display:none;">
+
+        <h2>Current Incident Case</h2>
+
         <p id="caseInfo"></p>
+
       </div>
       <h1>GDPR Data Breach Notification Wizard</h1>
 
@@ -47,7 +50,7 @@
       
 
         <div id="startSection">
-            <button id="startBtn">Start Assessment</button>
+            <button id="startBtn" class="primary-btn">Start Assessment</button>
         </div>
 
 
@@ -62,8 +65,8 @@
           <p id="questionText">Was personal data involved in the breach?</p>
 
           <div id="answerButtons">
-            <button onclick="handleAnswer(true)">Yes</button>
-            <button onclick="handleAnswer(false)">No</button>
+            <button class="primary-btn" onclick="handleAnswer(true)">Yes</button>
+            <button class="primary-btn" onclick="handleAnswer(false)">No</button>
           </div>
         </div>
 
@@ -92,7 +95,7 @@
 
         <br><br>
 
-        <button onclick="restart()">Start Again</button>
+        <button class="primary-btn" onclick="restart()">Start Again</button>
       </div>
 
     </div>
