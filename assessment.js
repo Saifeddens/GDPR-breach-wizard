@@ -313,6 +313,8 @@ function generateAuthorityNotification() {
     `;
 
   notificationBox.style.display = "block";
+  authorityBtn.style.display = "none";
+  userBtn.style.display = "inline-block";
 }
 
 function generateUserNotification() {
@@ -336,6 +338,8 @@ The incident ${
   `;
 
   notificationBox.style.display = "block";
+  userBtn.style.display = "none";
+  authorityBtn.style.display = "inline-block";  
 }
 
 function selectScale(type) {
@@ -357,8 +361,8 @@ function selectScale(type) {
       "Is there a likely risk of harm to this individual?";
 
     answerButtons.innerHTML = `
-      <button onclick="handleAnswer(true)">Yes</button>
-      <button onclick="handleAnswer(false)">No</button>
+      <button class="primary-btn" onclick="handleAnswer(true)">Yes</button>
+      <button class="primary-btn" onclick="handleAnswer(false)">No</button>
     `;
   } else {
     evaluateRisk();
