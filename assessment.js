@@ -110,6 +110,16 @@ function showResult(decision, explanation) {
     })
     );
 
+  const history = JSON.parse(localStorage.getItem("gdprAssessmentHistory")) || [];
+
+  history.push({
+    decision: decision,
+    explanation: explanation,
+    date: new Date().toLocaleString()
+  });
+
+  localStorage.setItem("gdprAssessmentHistory", JSON.stringify(history));
+
   const notificationBox = document.getElementById("notificationBox");
   notificationBox.style.display = "none";
 

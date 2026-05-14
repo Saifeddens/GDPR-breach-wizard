@@ -87,3 +87,29 @@ window.addEventListener("load", () => {
     ? mitigations.map(item => `<li>${item}</li>`).join("")
     : "<li>No additional mitigation measures suggested.</li>";
 });
+
+window.addEventListener("load", () => {
+  const history = JSON.parse(localStorage.getItem("gdprAssessmentHistory")) || [];
+
+  const totalAssessments = document.getElementById("totalAssessments");
+  const highRiskCases = document.getElementById("highRiskCases");
+  const notificationsGenerated = document.getElementById("notificationsGenerated");
+  const complianceRate = document.getElementById("complianceRate");
+
+  if (!totalAssessments) return;
+
+  const total = history.length;
+  const highRisk = history.filter(item => item.decision === "High Risk Breach").length;
+
+  const notifications = history.filter(item =>
+    item.decision === "High Risk Breach" ||
+    item.decision === "Moderate Risk Breach"
+  ).length;
+
+  const rate = total > 0 ? Math.round(((total - highRisk) / total) * 100) : 0;
+
+  totalAssessments.innerText = total;
+  highRiskCases.innerText = highRisk;
+  notificationsGenerated.innerText = notifications;
+  complianceRate.innerText = rate + "%";
+});
