@@ -57,22 +57,23 @@
     </section>
 
     <section class="recent-section">
-      <h2>Recent Incident Activity</h2>
+      <h2>Assessment History</h2>
 
-      <div class="activity-card">
-        <strong>Case #001 — Employee Laptop Theft</strong>
-        <p>Status: High Risk • Notifications required</p>
-      </div>
+      <table class="history-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Decision</th>
+            <th>Summary</th>
+          </tr>
+        </thead>
 
-      <div class="activity-card">
-        <strong>Case #002 — Accidental Email Disclosure</strong>
-        <p>Status: Moderate Risk • Authority notification required</p>
-      </div>
-
-      <div class="activity-card">
-        <strong>Case #003 — Encrypted Device Loss</strong>
-        <p>Status: Low Risk • No notification required</p>
-      </div>
+        <tbody id="historyTableBody">
+          <tr>
+            <td colspan="3">No assessments completed yet.</td>
+          </tr>
+        </tbody>
+      </table>
     </section>
 
   </main>

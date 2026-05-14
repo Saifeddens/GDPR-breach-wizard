@@ -130,6 +130,7 @@ window.addEventListener("load", () => {
   const highRiskCases = document.getElementById("highRiskCases");
   const notificationsGenerated = document.getElementById("notificationsGenerated");
   const notificationRequired = document.getElementById("notificationRequired");
+  const historyTableBody = document.getElementById("historyTableBody");
 
   if (!totalAssessments) return;
 
@@ -145,6 +146,27 @@ window.addEventListener("load", () => {
   highRiskCases.innerText = highRisk;
   notificationsGenerated.innerText = notifications;
   notificationRequired.innerText = notifications;
+  if (historyTableBody) {
+    if (history.length === 0) {
+      historyTableBody.innerHTML = `
+        <tr>
+          <td colspan="3">No assessments completed yet.</td>
+        </tr>
+      `;
+    } else {
+      historyTableBody.innerHTML = history
+        .slice()
+        .reverse()
+        .map(item => `
+          <tr>
+            <td>${item.date}</td>
+            <td>${item.decision}</td>
+            <td>${item.explanation.substring(0, 90)}...</td>
+          </tr>
+        `)
+        .join("");
+    }
+  }
 });
 
 function downloadReportPDF() {

@@ -278,3 +278,26 @@ textarea{
   background:#e8f7ef;
   color:#157347;
 }
+
+.history-table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:20px;
+}
+
+.history-table th,
+.history-table td{
+  text-align:left;
+  padding:14px;
+  border-bottom:1px solid #e6eef7;
+}
+
+.history-table th{
+  color:#163c72;
+  font-weight:bold;
+  background:#f7fbff;
+}
+
+.history-table td{
+  color:#294766;
+}
