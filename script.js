@@ -30,6 +30,8 @@ window.addEventListener("load", () => {
   const severityScoreBox = document.getElementById("severityScore");
   const severityBadge = document.getElementById("severityBadge");
 
+  const obligationList = document.getElementById("obligationList");
+
   if (!incidentBox || !incident || !assessment) return;
 
   if (severityScoreBox && severityBadge) {
@@ -77,6 +79,21 @@ window.addEventListener("load", () => {
     actions += "<li>Document incident internally</li>";
     actions += "<li>Monitor situation</li>";
   }
+
+  let obligations = "";
+
+  if (assessment.decision === "High Risk Breach") {
+    obligations += "<li>Supervisory authority notification: Required</li>";
+    obligations += "<li>Affected individuals notification: Required</li>";
+  } else if (assessment.decision === "Moderate Risk Breach") {
+    obligations += "<li>Supervisory authority notification: Likely required</li>";
+    obligations += "<li>Affected individuals notification: Not automatically required</li>";
+  } else {
+    obligations += "<li>Supervisory authority notification: Not required</li>";
+    obligations += "<li>Affected individuals notification: Not required</li>";
+  }
+
+  obligationList.innerHTML = obligations;
 
   actionList.innerHTML = actions;
   riskList.innerHTML = risks.length
