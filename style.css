@@ -237,3 +237,44 @@ textarea{
   color:#294766;
   line-height:1.6;
 }
+
+.severity-card{
+  background:#f7fbff;
+  border:1px solid #d9e8f7;
+  border-radius:16px;
+  padding:28px;
+}
+
+.severity-card h2{
+  margin-bottom:12px;
+}
+
+#severityScore{
+  font-size:40px;
+  font-weight:bold;
+  color:#163c72;
+  margin-bottom:14px;
+}
+
+.badge{
+  display:inline-block;
+  padding:8px 14px;
+  border-radius:999px;
+  font-weight:bold;
+  font-size:14px;
+}
+
+.badge.high{
+  background:#ffe5e5;
+  color:#b42318;
+}
+
+.badge.moderate{
+  background:#fff4d6;
+  color:#9a6700;
+}
+
+.badge.low{
+  background:#e8f7ef;
+  color:#157347;
+}

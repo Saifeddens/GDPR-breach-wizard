@@ -26,7 +26,26 @@ window.addEventListener("load", () => {
   const assessmentBox = document.getElementById("assessmentReport");
   const actionList = document.getElementById("actionList");
 
+  const severityScore = localStorage.getItem("gdprSeverity");
+  const severityScoreBox = document.getElementById("severityScore");
+  const severityBadge = document.getElementById("severityBadge");
+
   if (!incidentBox || !incident || !assessment) return;
+
+  if (severityScoreBox && severityBadge) {
+    severityScoreBox.innerText = `${severityScore || 0}/100`;
+
+    if (severityScore >= 70) {
+      severityBadge.innerText = "High Severity";
+      severityBadge.className = "badge high";
+    } else if (severityScore >= 35) {
+      severityBadge.innerText = "Moderate Severity";
+      severityBadge.className = "badge moderate";
+    } else {
+      severityBadge.innerText = "Low Severity";
+      severityBadge.className = "badge low";
+    }
+  }
 
   incidentBox.innerHTML = `
     <h2>Incident Summary</h2>
