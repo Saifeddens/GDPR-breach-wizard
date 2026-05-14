@@ -352,6 +352,30 @@ function evaluateRisk() {
       level: severityLevel
     })
   );
+
+  let aiSummary = `
+  The incident involves ${
+    answers.sensitiveData ? "sensitive personal data" : "personal data"
+  } affecting ${
+    answers.scale === "large"
+      ? "a large number of individuals"
+      : answers.scale === "multiple"
+      ? "multiple individuals"
+      : "a single individual"
+  }.
+
+  ${
+    answers.encrypted
+      ? "The data was protected through encryption."
+      : "The data was not protected through encryption."
+  }
+
+  Based on the assessment, the breach has been classified as ${decision}.
+  `;
+
+  localStorage.setItem("gdprAiSummary", aiSummary);
+
+
   showResult(decision, explanation);
 }
 
