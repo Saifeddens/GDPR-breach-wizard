@@ -26,6 +26,18 @@ window.addEventListener("load", () => {
   const assessmentBox = document.getElementById("assessmentReport");
   const actionList = document.getElementById("actionList");
 
+  const severityData = JSON.parse(localStorage.getItem("gdprSeverity"));
+
+  const reportSeverityScore = document.getElementById("reportSeverityScore");
+  const reportSeverityLevel = document.getElementById("reportSeverityLevel");
+
+  const reportRiskList = document.getElementById("reportRiskList");
+  const reportMitigationList = document.getElementById("reportMitigationList");
+
+  const savedRisks = JSON.parse(localStorage.getItem("gdprRisks")) || [];
+  const savedMitigations = JSON.parse(localStorage.getItem("gdprMitigations")) || [];
+
+
   const severityScore = localStorage.getItem("gdprSeverity");
   const severityScoreBox = document.getElementById("severityScore");
   const severityBadge = document.getElementById("severityBadge");
@@ -65,6 +77,20 @@ window.addEventListener("load", () => {
     <p><strong>Decision:</strong> ${assessment.decision}</p>
     <p>${assessment.explanation}</p>
   `;
+
+  if (severityData) {
+    reportSeverityScore.innerText = severityData.score + "/100";
+    reportSeverityLevel.innerText = severityData.level;
+  }
+
+  reportRiskList.innerHTML = savedRisks
+    .map(risk => `<li>${risk}</li>`)
+    .join("");
+
+  reportMitigationList.innerHTML = savedMitigations
+    .map(item => `<li>${item}</li>`)
+    .join("");
+
 
   let actions = "";
 
