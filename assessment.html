@@ -77,6 +77,16 @@
 
         <p id="resultDecision"></p>
         <p id="resultExplanation"></p>
+        
+        <div class="action-box" id="riskBox" style="display:none; margin-top:20px;">
+          <h2>Identified Risks</h2>
+          <ul id="riskList"></ul>
+        </div>
+
+        <div class="action-box" id="mitigationBox" style="display:none; margin-top:20px;">
+          <h2>Recommended Mitigation Measures</h2>
+          <ul id="mitigationList"></ul>
+        </div>
 
         <button id="authorityBtn" class="primary-btn" onclick="generateAuthorityNotification()">
           Generate Authority Notification

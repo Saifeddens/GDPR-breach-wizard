@@ -96,6 +96,7 @@ function handleAnswer(value) {
   }
 }
 
+
 function showResult(decision, explanation) {
   questionSection.style.display = "none";
   resultSection.style.display = "block";
@@ -133,6 +134,32 @@ function showResult(decision, explanation) {
   } else {
     authorityBtn.style.display = "block";
     userBtn.style.display = "block";
+  }
+
+
+  const savedRisks = JSON.parse(localStorage.getItem("gdprRisks")) || [];
+  const savedMitigations = JSON.parse(localStorage.getItem("gdprMitigations")) || [];
+
+  const riskBox = document.getElementById("riskBox");
+  const mitigationBox = document.getElementById("mitigationBox");
+
+  const riskList = document.getElementById("riskList");
+  const mitigationList = document.getElementById("mitigationList");
+
+  if (savedRisks.length > 0) {
+    riskBox.style.display = "block";
+
+    riskList.innerHTML = savedRisks
+      .map(risk => `<li>${risk}</li>`)
+      .join("");
+  }
+
+  if (savedMitigations.length > 0) {
+    mitigationBox.style.display = "block";
+
+    mitigationList.innerHTML = savedMitigations
+      .map(item => `<li>${item}</li>`)
+      .join("");
   }
 
   document.getElementById("reportBtn").style.display = "inline-block";
