@@ -94,7 +94,7 @@ window.addEventListener("load", () => {
   const totalAssessments = document.getElementById("totalAssessments");
   const highRiskCases = document.getElementById("highRiskCases");
   const notificationsGenerated = document.getElementById("notificationsGenerated");
-  const complianceRate = document.getElementById("complianceRate");
+  const notificationRequired = document.getElementById("notificationRequired");
 
   if (!totalAssessments) return;
 
@@ -106,10 +106,8 @@ window.addEventListener("load", () => {
     item.decision === "Moderate Risk Breach"
   ).length;
 
-  const rate = total > 0 ? Math.round(((total - highRisk) / total) * 100) : 0;
-
   totalAssessments.innerText = total;
   highRiskCases.innerText = highRisk;
   notificationsGenerated.innerText = notifications;
-  complianceRate.innerText = rate + "%";
+  notificationRequired.innerText = notifications;
 });
