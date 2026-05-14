@@ -301,3 +301,28 @@ textarea{
 .history-table td{
   color:#294766;
 }
+
+.severity-badge{
+  display:inline-block;
+  padding:6px 14px;
+  border-radius:999px;
+  font-weight:bold;
+  color:white;
+  margin-left:8px;
+}
+
+.severity-low{
+  background:#2e9d57;
+}
+
+.severity-moderate{
+  background:#d9a404;
+}
+
+.severity-high{
+  background:#e67e22;
+}
+
+.severity-critical{
+  background:#d64545;
+}

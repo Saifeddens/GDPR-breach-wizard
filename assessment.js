@@ -114,6 +114,8 @@ function showResult(decision, explanation) {
   const history = JSON.parse(localStorage.getItem("gdprAssessmentHistory")) || [];
 
   history.push({
+    caseId:
+      JSON.parse(localStorage.getItem("gdprIncident"))?.caseId || "N/A",
     decision: decision,
     explanation: explanation,
     date: new Date().toLocaleString()
@@ -134,6 +136,20 @@ function showResult(decision, explanation) {
 
     severityScore.innerText = savedSeverity.score + "/100";
     severityLevel.innerText = savedSeverity.level;
+
+    severityLevel.className = "severity-badge";
+    if (savedSeverity.level === "Low") {
+      severityLevel.classList.add("severity-low");
+    }
+    else if (savedSeverity.level === "Moderate") {
+      severityLevel.classList.add("severity-moderate");
+    }
+    else if (savedSeverity.level === "High") {
+      severityLevel.classList.add("severity-high");
+    }
+    else if (savedSeverity.level === "Critical") {
+      severityLevel.classList.add("severity-critical");
+}
   }
 
   notificationBox.style.display = "none";
@@ -516,6 +532,7 @@ window.addEventListener("load", () => {
     document.getElementById("caseSummary").style.display = "block";
 
     document.getElementById("caseInfo").innerHTML = `
+      <strong>Case ID:</strong> ${savedIncident.caseId}<br>
       <strong>Title:</strong> ${savedIncident.title}<br>
       <strong>Department:</strong> ${savedIncident.department}<br>
       <strong>Category:</strong> ${savedIncident.category}<br>

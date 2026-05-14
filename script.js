@@ -1,5 +1,8 @@
 function saveIncident() {
+  const caseId =
+    "CASE-" + Math.floor(1000 + Math.random() * 9000);
   const incident = {
+    caseId: caseId,
     title: document.getElementById("incidentTitle").value,
     date: document.getElementById("incidentDate").value,
     department: document.getElementById("incidentDepartment").value,
@@ -51,6 +54,7 @@ window.addEventListener("load", () => {
   if (!incidentBox || !incident || !assessment) return;
 
   incidentBox.innerHTML = `
+    <p><strong>Case ID:</strong> ${incident.caseId}</p>
     <h2>Incident Summary</h2>
     <p><strong>Title:</strong> ${incident.title}</p>
     <p><strong>Date:</strong> ${incident.date}</p>
@@ -70,6 +74,21 @@ window.addEventListener("load", () => {
   if (severityData) {
     reportSeverityScore.innerText = severityData.score + "/100";
     reportSeverityLevel.innerText = severityData.level;
+
+    reportSeverityLevel.className = "severity-badge";
+
+    if (severityData.level === "Low") {
+      reportSeverityLevel.classList.add("severity-low");
+    }
+    else if (severityData.level === "Moderate") {
+      reportSeverityLevel.classList.add("severity-moderate");
+    }
+    else if (severityData.level === "High") {
+      reportSeverityLevel.classList.add("severity-high");
+    }
+    else if (severityData.level === "Critical") {
+      reportSeverityLevel.classList.add("severity-critical");
+    }
   }
 
   reportRiskList.innerHTML = savedRisks
@@ -159,6 +178,7 @@ window.addEventListener("load", () => {
         .reverse()
         .map(item => `
           <tr>
+            <td>${item.caseId}</td>
             <td>${item.date}</td>
             <td>${item.decision}</td>
             <td>${item.explanation.substring(0, 90)}...</td>
