@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Compliance Report</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 
@@ -52,7 +53,7 @@
       </div>
 
 
-      
+
     <br>
 
       <div class="action-box">
@@ -115,6 +116,13 @@
     <br>
 
     <br>
+
+    
+    <button class="primary-btn" onclick="downloadReportPDF()">
+      Download PDF Report
+    </button>
+
+    <br><br>
 
     <a href="incident.html" class="primary-btn">
       Create New Case →

@@ -146,3 +146,70 @@ window.addEventListener("load", () => {
   notificationsGenerated.innerText = notifications;
   notificationRequired.innerText = notifications;
 });
+
+function downloadReportPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  const incident = JSON.parse(localStorage.getItem("gdprIncident"));
+  const assessment = JSON.parse(localStorage.getItem("gdprAssessment"));
+  const severity = JSON.parse(localStorage.getItem("gdprSeverity"));
+  const risks = JSON.parse(localStorage.getItem("gdprRisks")) || [];
+  const mitigations = JSON.parse(localStorage.getItem("gdprMitigations")) || [];
+  const aiSummary = localStorage.getItem("gdprAiSummary");
+  const timestamp = localStorage.getItem("gdprLastAssessmentDate");
+
+  let y = 15;
+
+  doc.setFontSize(16);
+  doc.text("GDPR Compliance Report", 15, y);
+  y += 12;
+
+  doc.setFontSize(11);
+  doc.text(`Generated: ${timestamp || "N/A"}`, 15, y);
+  y += 10;
+
+  doc.text("Incident Summary", 15, y);
+  y += 8;
+
+  doc.text(`Title: ${incident?.title || "N/A"}`, 15, y); y += 7;
+  doc.text(`Date: ${incident?.date || "N/A"}`, 15, y); y += 7;
+  doc.text(`Department: ${incident?.department || "N/A"}`, 15, y); y += 7;
+  doc.text(`Category: ${incident?.category || "N/A"}`, 15, y); y += 7;
+  doc.text(`Affected: ${incident?.count || "N/A"}`, 15, y); y += 10;
+
+  doc.text("Legal Assessment", 15, y);
+  y += 8;
+  doc.text(`Decision: ${assessment?.decision || "N/A"}`, 15, y); y += 7;
+
+  const explanationLines = doc.splitTextToSize(assessment?.explanation || "N/A", 180);
+  doc.text(explanationLines, 15, y);
+  y += explanationLines.length * 7 + 5;
+
+  doc.text(`Severity: ${severity?.score || 0}/100 (${severity?.level || "N/A"})`, 15, y);
+  y += 10;
+
+  doc.text("Identified Risks:", 15, y);
+  y += 8;
+  risks.forEach(risk => {
+    doc.text(`- ${risk}`, 20, y);
+    y += 7;
+  });
+
+  y += 4;
+  doc.text("Mitigation Measures:", 15, y);
+  y += 8;
+  mitigations.forEach(item => {
+    doc.text(`- ${item}`, 20, y);
+    y += 7;
+  });
+
+  y += 4;
+  doc.text("AI-style Incident Summary:", 15, y);
+  y += 8;
+
+  const summaryLines = doc.splitTextToSize(aiSummary || "N/A", 180);
+  doc.text(summaryLines, 15, y);
+
+  doc.save("gdpr-compliance-report.pdf");
+}
