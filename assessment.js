@@ -122,6 +122,20 @@ function showResult(decision, explanation) {
   localStorage.setItem("gdprAssessmentHistory", JSON.stringify(history));
 
   const notificationBox = document.getElementById("notificationBox");
+
+  const savedSeverity = JSON.parse(localStorage.getItem("gdprSeverity"));
+
+  const severityBox = document.getElementById("severityBox");
+  const severityScore = document.getElementById("severityScore");
+  const severityLevel = document.getElementById("severityLevel");
+
+  if (savedSeverity) {
+    severityBox.style.display = "block";
+
+    severityScore.innerText = savedSeverity.score + "/100";
+    severityLevel.innerText = savedSeverity.level;
+  }
+
   notificationBox.style.display = "none";
 
   // 🔥 CONTROL BUTTONS
@@ -203,6 +217,7 @@ function evaluateRisk() {
   let riskFlags = [];
   let mitigations = [];
   let severityScore = 0;
+  let severityLevel = "";
 
   // here we collect the information and reasons
   if (answers.sensitiveData) {
@@ -320,7 +335,23 @@ function evaluateRisk() {
 
   localStorage.setItem("gdprRisks", JSON.stringify(riskFlags));
   localStorage.setItem("gdprMitigations", JSON.stringify(mitigations));
-  localStorage.setItem("gdprSeverity", severityScore);
+  if (severityScore >= 75) {
+    severityLevel = "Critical";
+  } else if (severityScore >= 50) {
+    severityLevel = "High";
+  } else if (severityScore >= 25) {
+    severityLevel = "Moderate";
+  } else {
+    severityLevel = "Low";
+  }
+
+  localStorage.setItem(
+    "gdprSeverity",
+    JSON.stringify({
+      score: severityScore,
+      level: severityLevel
+    })
+  );
   showResult(decision, explanation);
 }
 
