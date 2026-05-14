@@ -44,6 +44,8 @@ window.addEventListener("load", () => {
   const savedRisks = JSON.parse(localStorage.getItem("gdprRisks")) || [];
   const savedMitigations = JSON.parse(localStorage.getItem("gdprMitigations")) || [];
 
+  
+
   const obligationList = document.getElementById("obligationList");
 
   if (!incidentBox || !incident || !assessment) return;
