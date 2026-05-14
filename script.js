@@ -26,6 +26,13 @@ window.addEventListener("load", () => {
   const aiSummary = localStorage.getItem("gdprAiSummary");
 
 
+  const assessmentTimestamp =
+  localStorage.getItem("gdprLastAssessmentDate");
+
+  const assessmentTimestampText =
+    document.getElementById("assessmentTimestamp");
+
+
   const severityData = JSON.parse(localStorage.getItem("gdprSeverity"));
 
   const reportSeverityScore = document.getElementById("reportSeverityScore");
@@ -73,6 +80,10 @@ window.addEventListener("load", () => {
 
   if (aiSummaryText && aiSummary) {
     aiSummaryText.innerText = aiSummary;
+  }
+
+  if (assessmentTimestampText && assessmentTimestamp) {
+    assessmentTimestampText.innerText = assessmentTimestamp;
   }
 
 

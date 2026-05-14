@@ -375,6 +375,11 @@ function evaluateRisk() {
 
   localStorage.setItem("gdprAiSummary", aiSummary);
 
+    localStorage.setItem(
+    "gdprLastAssessmentDate",
+    new Date().toLocaleString()
+  );
+
 
   showResult(decision, explanation);
 }
