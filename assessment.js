@@ -149,10 +149,13 @@ function restart() {
   <button class="primary-btn" onclick="handleAnswer(false)">No</button>
 `;
   progressFill.style.width = "0%";
-  progressText.innerText = "Step 1 of 5";
+  progressText.innerText = "Step 1 of 6";
 
   authorityBtn.style.display = "block";
   userBtn.style.display = "block";
+
+  answerButtons.style.display = "block";
+  dynamicOptions.innerHTML = "";
 }
 
 function evaluateRisk() {
