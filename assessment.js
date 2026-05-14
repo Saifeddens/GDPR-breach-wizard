@@ -90,7 +90,7 @@ function handleAnswer(value) {
   `;
 }
 
-  else if (step === 5) {
+  else if (step === 6) {
     answers.individualRisk = value;
     evaluateRisk();
   }
@@ -369,9 +369,13 @@ function selectScale(type) {
   if (type === "single") {
     step = 6;
     updateProgress();
-    questionTitle.innerText = "Step 5: Risk to Individual";
+
+    questionTitle.innerText = "Step 6: Risk to Individual";
     questionText.innerText =
       "Is there a likely risk of harm to this individual?";
+
+    dynamicOptions.innerHTML = "";
+    answerButtons.style.display = "block";
 
     answerButtons.innerHTML = `
       <button class="primary-btn" onclick="handleAnswer(true)">Yes</button>
