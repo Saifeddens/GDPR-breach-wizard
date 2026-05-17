@@ -103,6 +103,57 @@ function showResult(decision, explanation) {
 
   resultDecision.innerText = decision;
   resultExplanation.innerText = explanation;
+
+  if (
+
+    decision === "GDPR does NOT apply" ||
+
+    decision === "No Impact"
+
+  ) {
+
+    localStorage.setItem(
+
+      "gdprSeverity",
+
+      JSON.stringify({
+
+        score: 0,
+
+        level: "Low"
+
+      })
+
+    );
+
+    localStorage.setItem("gdprRisks", JSON.stringify([]));
+
+    localStorage.setItem("gdprMitigations", JSON.stringify([]));
+
+    localStorage.setItem(
+
+      "gdprAiSummary",
+
+      "No personal data was involved. GDPR notification obligations were not triggered."
+
+    );
+
+  }
+
+  localStorage.setItem(
+
+    "gdprAssessment",
+
+    JSON.stringify({
+
+      decision,
+
+      explanation
+
+    })
+
+  );
+
   localStorage.setItem(
   "gdprAssessment",
     JSON.stringify({

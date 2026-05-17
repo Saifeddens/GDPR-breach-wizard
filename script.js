@@ -255,3 +255,91 @@ function downloadReportPDF() {
 
   doc.save("gdpr-compliance-report.pdf");
 }
+async function generateGeminiReview() {
+  const API_KEY = "YOUR_API_KEY_HERE";
+
+  const incident = JSON.parse(localStorage.getItem("gdprIncident"));
+  const assessment = JSON.parse(localStorage.getItem("gdprAssessment"));
+  const severity = JSON.parse(localStorage.getItem("gdprSeverity"));
+  const risks = JSON.parse(localStorage.getItem("gdprRisks")) || [];
+  const mitigations = JSON.parse(localStorage.getItem("gdprMitigations")) || [];
+
+  const output = document.getElementById("geminiReviewText");
+  output.innerText = "Generating AI review...";
+
+  const fallbackReview = `
+Live Gemini API review could not be generated because the API quota or connection limit was reached.
+
+Fallback compliance review:
+Based on the rule-based assessment, this incident should be handled according to the displayed GDPR notification decision, severity score, identified risks, and mitigation measures. The rule-based result remains the official output of the PoC.
+
+Note: This AI review is an assistive explanation only and does not replace legal advice.
+  `;
+
+  const prompt = `
+You are assisting with an academic GDPR data breach proof of concept.
+
+Based on the following incident and rule-based assessment, write a short compliance review in plain English.
+
+Do not override the rule-based decision. Treat it as the official result.
+
+Incident:
+Title: ${incident?.title}
+Department: ${incident?.department}
+Category: ${incident?.category}
+Affected individuals: ${incident?.count}
+Description: ${incident?.description}
+
+Assessment:
+Decision: ${assessment?.decision}
+Explanation: ${assessment?.explanation}
+Severity: ${severity?.score}/100 (${severity?.level})
+
+Identified risks:
+${risks.join(", ")}
+
+Recommended mitigations:
+${mitigations.join(", ")}
+
+Write:
+1. a short summary
+2. the main legal/compliance concern
+3. suggested next step
+4. a disclaimer that this is not legal advice
+`;
+
+  try {
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          contents: [
+            {
+              parts: [{ text: prompt }]
+            }
+          ]
+        })
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      output.innerText = fallbackReview;
+      return;
+    }
+
+    const aiText =
+      data.candidates?.[0]?.content?.parts?.[0]?.text ||
+      fallbackReview;
+
+    output.innerText = aiText;
+
+  } catch (error) {
+    output.innerText = fallbackReview;
+  }
+}
