@@ -256,7 +256,7 @@ function downloadReportPDF() {
   doc.save("gdpr-compliance-report.pdf");
 }
 async function generateGeminiReview() {
-  const API_KEY = "your open router key is here ";
+  const API_KEY = "your key";
 
   const incident = JSON.parse(localStorage.getItem("gdprIncident"));
   const assessment = JSON.parse(localStorage.getItem("gdprAssessment"));
