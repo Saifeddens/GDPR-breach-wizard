@@ -1,15 +1,44 @@
 function saveIncident() {
+  const title = document.getElementById("incidentTitle").value.trim();
+  const date = document.getElementById("incidentDate").value;
+  const department = document.getElementById("incidentDepartment").value;
+  const category = document.getElementById("incidentCategory").value;
+  const count = document.getElementById("incidentCount").value;
+  const urgency = document.getElementById("incidentUrgency").value;
+  const description = document.getElementById("incidentDescription").value.trim();
+
+  if (title.length < 5) {
+    alert("Please enter a clearer incident title.");
+    return;
+  }
+
+  if (!date) {
+    alert("Please select the date the incident was discovered.");
+    return;
+  }
+
+  if (!count || Number(count) < 1) {
+    alert("Please enter a valid number of affected individuals.");
+    return;
+  }
+
+  if (description.length < 15) {
+    alert("Please provide a more detailed incident description.");
+    return;
+  }
+
   const caseId =
     "CASE-" + Math.floor(1000 + Math.random() * 9000);
+
   const incident = {
     caseId: caseId,
-    title: document.getElementById("incidentTitle").value,
-    date: document.getElementById("incidentDate").value,
-    department: document.getElementById("incidentDepartment").value,
-    category: document.getElementById("incidentCategory").value,
-    count: document.getElementById("incidentCount").value,
-    urgency: document.getElementById("incidentUrgency").value,
-    description: document.getElementById("incidentDescription").value,
+    title: title,
+    date: date,
+    department: department,
+    category: category,
+    count: count,
+    urgency: urgency,
+    description: description
   };
 
   localStorage.setItem("gdprIncident", JSON.stringify(incident));
