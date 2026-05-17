@@ -101,27 +101,38 @@
           <ul id="mitigationList"></ul>
         </div>
 
-        <button id="authorityBtn" class="primary-btn" onclick="generateAuthorityNotification()">
-          Generate Authority Notification
-        </button>
+         <div class="result-actions">
+          <div class="button-row">
+            <button id="authorityBtn" class="primary-btn"
+              onclick="generateAuthorityNotification()">
+              Generate Authority Notification Draft
+            </button>
 
-        <button id="userBtn" class="primary-btn" onclick="generateUserNotification()">
-          Generate User Notification
-        </button>
+            <button id="userBtn" class="primary-btn"
+              onclick="generateUserNotification()">
+              Generate User Notification Draft
+            </button>
+          </div>
+
+          <div class="button-row">
+            <a href="report.html"
+              id="reportBtn"
+              class="primary-btn report-link">
+              View Compliance Report →
+            </a>
+          </div>
+
+          <div class="button-row">
+            <button class="primary-btn" onclick="restart()">
+              Reassess the case
+            </button>
+          </div>
+        </div>
 
         <div id="notificationBox" style="display: none; margin-top: 20px;">
           <h3 id="notificationTitle"></h3>
           <p id="notificationText"></p>
         </div>
-
-        <a href="report.html" id="reportBtn" class="report-link" style="display:none;">
-        View Compliance Report →
-        </a>
-
-        <br><br>
-
-        <button class="primary-btn" onclick="restart()">Start Again</button>
-      </div>
 
     </div>
   </main>

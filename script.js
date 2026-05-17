@@ -346,3 +346,34 @@ Write:
     output.innerText = fallbackReview;
   }
 }
+
+function downloadHistory() {
+  const history =
+    JSON.parse(localStorage.getItem("gdprAssessmentHistory")) || [];
+
+  if (history.length === 0) {
+    alert("No assessment history available.");
+    return;
+  }
+
+  let content = "GDPR Assessment History\n\n";
+
+  history.forEach((item, index) => {
+    content += `Case ${index + 1}\n`;
+    content += `Decision: ${item.decision}\n`;
+    content += `Explanation: ${item.explanation}\n`;
+    content += `Date: ${item.date}\n`;
+    content += `--------------------------\n`;
+  });
+
+  const blob = new Blob([content], { type: "text/plain" });
+
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+
+  link.download = "gdpr-assessment-history.txt";
+
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}

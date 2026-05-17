@@ -104,79 +104,76 @@ function showResult(decision, explanation) {
   resultDecision.innerText = decision;
   resultExplanation.innerText = explanation;
 
+  const riskBox = document.getElementById("riskBox");
+  const mitigationBox = document.getElementById("mitigationBox");
+  const riskList = document.getElementById("riskList");
+  const mitigationList = document.getElementById("mitigationList");
+
+  riskBox.style.display = "none";
+  mitigationBox.style.display = "none";
+  riskList.innerHTML = "";
+  mitigationList.innerHTML = "";
+
   if (
-
     decision === "GDPR does NOT apply" ||
-
     decision === "No Impact"
-
   ) {
-
     localStorage.setItem(
-
       "gdprSeverity",
-
       JSON.stringify({
-
         score: 0,
-
         level: "Low"
-
       })
-
     );
 
     localStorage.setItem("gdprRisks", JSON.stringify([]));
-
     localStorage.setItem("gdprMitigations", JSON.stringify([]));
 
     localStorage.setItem(
-
       "gdprAiSummary",
-
-      "No personal data was involved. GDPR notification obligations were not triggered."
-
+      "No personal data was involved or no individuals were affected, so GDPR notification obligations were not triggered."
     );
-
   }
 
   localStorage.setItem(
-
     "gdprAssessment",
-
     JSON.stringify({
-
       decision,
-
       explanation
-
     })
-
   );
 
-  localStorage.setItem(
-  "gdprAssessment",
-    JSON.stringify({
-        decision,
-        explanation
-    })
-    );
+  const history =
+    JSON.parse(localStorage.getItem("gdprAssessmentHistory")) || [];
 
-  const history = JSON.parse(localStorage.getItem("gdprAssessmentHistory")) || [];
+  const currentIncident =
+    JSON.parse(localStorage.getItem("gdprIncident"));
 
-  history.push({
-    caseId:
-      JSON.parse(localStorage.getItem("gdprIncident"))?.caseId || "N/A",
+  const currentCaseId = currentIncident?.caseId || "N/A";
+
+  const existingIndex = history.findIndex(
+    item => item.caseId === currentCaseId
+  );
+
+  const historyEntry = {
+    caseId: currentCaseId,
     decision: decision,
     explanation: explanation,
     date: new Date().toLocaleString()
-  });
+  };
+
+  if (existingIndex >= 0) {
+    history[existingIndex] = historyEntry;
+  } else {
+    history.push(historyEntry);
+  }
 
   localStorage.setItem("gdprAssessmentHistory", JSON.stringify(history));
 
   const notificationBox = document.getElementById("notificationBox");
 
-  const savedSeverity = JSON.parse(localStorage.getItem("gdprSeverity"));
+  const savedSeverity =
+    JSON.parse(localStorage.getItem("gdprSeverity"));
 
   const severityBox = document.getElementById("severityBox");
   const severityScore = document.getElementById("severityScore");
@@ -184,28 +181,24 @@ function showResult(decision, explanation) {
 
   if (savedSeverity) {
     severityBox.style.display = "block";
-
     severityScore.innerText = savedSeverity.score + "/100";
     severityLevel.innerText = savedSeverity.level;
 
     severityLevel.className = "severity-badge";
+
     if (savedSeverity.level === "Low") {
       severityLevel.classList.add("severity-low");
-    }
-    else if (savedSeverity.level === "Moderate") {
+    } else if (savedSeverity.level === "Moderate") {
       severityLevel.classList.add("severity-moderate");
-    }
-    else if (savedSeverity.level === "High") {
+    } else if (savedSeverity.level === "High") {
       severityLevel.classList.add("severity-high");
-    }
-    else if (savedSeverity.level === "Critical") {
+    } else if (savedSeverity.level === "Critical") {
       severityLevel.classList.add("severity-critical");
-}
+    }
   }
 
   notificationBox.style.display = "none";
 
-  // 🔥 CONTROL BUTTONS
   if (decision === "GDPR does NOT apply" || decision === "No Impact") {
     authorityBtn.style.display = "none";
     userBtn.style.display = "none";
@@ -217,19 +210,14 @@ function showResult(decision, explanation) {
     userBtn.style.display = "block";
   }
 
+  const savedRisks =
+    JSON.parse(localStorage.getItem("gdprRisks")) || [];
 
-  const savedRisks = JSON.parse(localStorage.getItem("gdprRisks")) || [];
-  const savedMitigations = JSON.parse(localStorage.getItem("gdprMitigations")) || [];
-
-  const riskBox = document.getElementById("riskBox");
-  const mitigationBox = document.getElementById("mitigationBox");
-
-  const riskList = document.getElementById("riskList");
-  const mitigationList = document.getElementById("mitigationList");
+  const savedMitigations =
+    JSON.parse(localStorage.getItem("gdprMitigations")) || [];
 
   if (savedRisks.length > 0) {
     riskBox.style.display = "block";
-
     riskList.innerHTML = savedRisks
       .map(risk => `<li>${risk}</li>`)
       .join("");
@@ -237,7 +225,6 @@ function showResult(decision, explanation) {
 
   if (savedMitigations.length > 0) {
     mitigationBox.style.display = "block";
-
     mitigationList.innerHTML = savedMitigations
       .map(item => `<li>${item}</li>`)
       .join("");
@@ -262,18 +249,19 @@ function restart() {
   authorityBtn.style.display = "block";
   userBtn.style.display = "block";
 
-  answerButtons.innerHTML = `
-  <button class="primary-btn" onclick="handleAnswer(true)">Yes</button>
-  <button class="primary-btn" onclick="handleAnswer(false)">No</button>
-`;
-  progressFill.style.width = "0%";
-  progressText.innerText = "Step 1 of 6";
+  authorityBtn.classList.remove("active-btn");
+  userBtn.classList.remove("active-btn");
 
-  authorityBtn.style.display = "block";
-  userBtn.style.display = "block";
+  answerButtons.innerHTML = `
+    <button class="primary-btn" onclick="handleAnswer(true)">Yes</button>
+    <button class="primary-btn" onclick="handleAnswer(false)">No</button>
+  `;
 
   answerButtons.style.display = "block";
   dynamicOptions.innerHTML = "";
+
+  progressFill.style.width = "0%";
+  progressText.innerText = "Step 1 of 6";
 }
 
 function evaluateRisk() {
@@ -479,8 +467,8 @@ function generateAuthorityNotification() {
     `;
 
   notificationBox.style.display = "block";
-  authorityBtn.style.display = "none";
-  userBtn.style.display = "inline-block";
+  authorityBtn.classList.add("active-btn");
+  userBtn.classList.remove("active-btn");
 }
 
 function generateUserNotification() {
@@ -503,9 +491,9 @@ The incident ${
   We sincerely apologize for this incident and are taking steps to ensure it does not happen again.
   `;
 
-  notificationBox.style.display = "block";
-  userBtn.style.display = "none";
-  authorityBtn.style.display = "inline-block";  
+  notificationBox.style.display = "block"; 
+  userBtn.classList.add("active-btn");
+  authorityBtn.classList.remove("active-btn");
 }
 
 function selectScale(type) {

@@ -326,3 +326,29 @@ textarea{
 .severity-critical{
   background:#d64545;
 }
+
+.result-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.primary-btn.active-btn {
+  background: #1e3a8a;
+  transform: scale(0.98);
+  opacity: 0.9;
+}
+
+.result-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.button-row {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
