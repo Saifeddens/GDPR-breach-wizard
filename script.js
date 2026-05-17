@@ -256,7 +256,7 @@ function downloadReportPDF() {
   doc.save("gdpr-compliance-report.pdf");
 }
 async function generateGeminiReview() {
-  const API_KEY = "YOUR_API_KEY_HERE";
+  const API_KEY = "your open router key is here ";
 
   const incident = JSON.parse(localStorage.getItem("gdprIncident"));
   const assessment = JSON.parse(localStorage.getItem("gdprAssessment"));
@@ -310,16 +310,19 @@ Write:
 
   try {
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`,
+      "https://openrouter.ai/api/v1/chat/completions",
       {
         method: "POST",
         headers: {
+          "Authorization": `Bearer ${API_KEY}`,
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          contents: [
+          model: "openai/gpt-3.5-turbo",
+          messages: [
             {
-              parts: [{ text: prompt }]
+              role: "user",
+              content: prompt
             }
           ]
         })
@@ -334,7 +337,7 @@ Write:
     }
 
     const aiText =
-      data.candidates?.[0]?.content?.parts?.[0]?.text ||
+      data.choices?.[0]?.message?.content ||
       fallbackReview;
 
     output.innerText = aiText;
